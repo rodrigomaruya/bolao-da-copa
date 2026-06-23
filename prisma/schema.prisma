@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  palpites  Palpite[]
+  pontos    Int        @default(0)
+  createdAt DateTime   @default(now())
+}
+
+model Jogo {
+  id          String     @id @default(cuid())
+  timeCasa    String
+  timeFora    String
+  golsCasa    Int?       // resultado real (preenchido depois)
+  golsFora    Int?
+  dataJogo    DateTime
+  finalizado  Boolean    @default(false)
+  premioUrl String?
+  palpites    Palpite[]
+}
+
+model Palpite {
+  id        String   @id @default(cuid())
+  userId    String
+  jogoId    String
+  golsCasa  Int
+  golsFora  Int
+  pontos    Int? 
+  acertou Boolean @default(false)    // calculado depois de finalizar o jogo
+  user      User     @relation(fields: [userId], references: [id])
+  jogo      Jogo     @relation(fields: [jogoId], references: [id])
+
+  @@unique([userId, jogoId]) // um palpite por usuário por jogo
+}
