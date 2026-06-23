@@ -50,7 +50,7 @@ export default function ResultadosPage() {
       </div>
 
       <div>
-        <h1 className="text-xl font-bold mb-3">Resultados</h1>
+        <h1 className="text-xl font-bold mb-3">Palpites</h1>
         <div className="space-y-6">
           {dados.jogos.map((jogo) => (
             <div key={jogo.id} className="border rounded-lg p-4">
